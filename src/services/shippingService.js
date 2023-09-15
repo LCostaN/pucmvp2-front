@@ -7,9 +7,7 @@ class ShippingService {
     const weight = order.products.reduce((p, total) => (total += p.weight * p.quantity), 0)
 
     const response = await fetch(SERVICE_URL + `${destinationCep}/${weight}`, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: { 'Content-Type': 'application/json' }
     })
     return response.json()
   }

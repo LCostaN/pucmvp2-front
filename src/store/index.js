@@ -1,31 +1,37 @@
 import { reactive } from 'vue'
 import { Order, OrderProduct, User } from '../models'
 
-class StoreState {
-  constructor({user, order}) {
-    this.user = user ? new User(user.name, user.cep) : null,
-    this.order = new Order(order?.id || 0, order?.user, order?.cep, order?.products)
-  }
+function saveStoreState() {
+  localStorage.setItem('store', JSON.stringify(store))
 }
 
-const DEFAULT_STORE_METHODS = {
+class StoreState {
+  constructor({ user, order }) {
+    this.user = user ? new User(user.name, user.cep) : null
+    this.order = new Order(
+      order?.id || 0,
+      order?.user,
+      order?.cep,
+      order?.products?.map((p) => OrderProduct.fromObject(p))
+    )
+  }
+
   setUser(val) {
     this.user = val
     this.order.setUser(val)
     saveStoreState()
-  },
+  }
 
-  setProductToOrder(product, quantity) {
-    const { id, weight } = product
-    this.order.setOrderProduct(new OrderProduct(id, quantity, weight))
-  },
+  updateProductOrder(orderProduct) {
+    if (orderProduct.quantity <= 0) this.order.remove(orderProduct)
+    else this.order.setOrderProduct(orderProduct)
+    saveStoreState()
+  }
+
   resetOrder() {
     this.order = new Order(0, this.user)
+    saveStoreState()
   }
-}
-
-function saveStoreState() {
-  localStorage.setItem('store', JSON.stringify(store))
 }
 
 function loadStoreState() {
@@ -34,6 +40,6 @@ function loadStoreState() {
   return new StoreState(state)
 }
 
-const store = reactive({ ...loadStoreState(), ...DEFAULT_STORE_METHODS })
+const store = reactive(loadStoreState())
 
 export default store
