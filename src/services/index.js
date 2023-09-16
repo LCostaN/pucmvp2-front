@@ -1,3 +1,2 @@
-export { default as orderService } from './orderService'
-export { default as productService } from './productService'
-export { default as shippingService, CEP_ORIGIN } from './shippingService'
+export { default as gameListService } from './gameListService'
+export { default as gameService } from './gameService'

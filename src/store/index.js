@@ -1,35 +1,28 @@
 import { reactive } from 'vue'
-import { Order, OrderProduct, User } from '../models'
+import { GameList, User } from '../models'
 
 function saveStoreState() {
   localStorage.setItem('store', JSON.stringify(store))
 }
 
 class StoreState {
-  constructor({ user, order }) {
-    this.user = user ? new User(user.name, user.cep) : null
-    this.order = new Order(
-      order?.id || 0,
-      order?.user,
-      order?.cep,
-      order?.products?.map((p) => OrderProduct.fromObject(p))
-    )
+  constructor({ user, lists }) {
+    this.user = user ? User.fromJson(user) : null
+    this.lists = (lists || []).map((gl) => GameList.fromJson(gl || {}))
   }
 
   setUser(val) {
     this.user = val
-    this.order.setUser(val)
     saveStoreState()
   }
 
-  updateProductOrder(orderProduct) {
-    if (orderProduct.quantity <= 0) this.order.remove(orderProduct)
-    else this.order.setOrderProduct(orderProduct)
+  addList(gameList) {
+    this.lists.push(gameList)
     saveStoreState()
   }
 
-  resetOrder() {
-    this.order = new Order(0, this.user)
+  removeList(id) {
+    this.lists = this.lists.filter((gl) => gl.id != id)
     saveStoreState()
   }
 }

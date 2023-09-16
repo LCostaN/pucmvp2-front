@@ -1,6 +1,11 @@
 export default class User {
-  constructor(name, cep) {
-    this.name = name;
-    this.cep = cep;
+  constructor(id, name, title) {
+    this.id = id
+    this.name = name
+    this.title = title
+  }
+
+  static fromJson({id, name, title}) {
+    return new User(id, name, title)
   }
 }

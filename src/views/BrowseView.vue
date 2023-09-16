@@ -1,0 +1,119 @@
+<script setup>
+import { ref, onMounted, computed } from 'vue'
+
+import { gameListService } from '../services'
+
+const filter = ref('')
+const lists = ref([])
+const display = computed(() => lists.value.filter((gl) => gl.name.includes(filter.value)))
+
+async function getLists() {
+  try {
+    lists.value = await gameListService.getAll()
+  } catch (e) {
+    lists.value = []
+    console.log(e)
+  }
+}
+
+onMounted(getLists)
+</script>
+
+<template>
+  <main id="browse">
+    <div class="search-input-control">
+      <font-awesome-icon class="search-icon" :icon="['fas', 'magnifying-glass']" />
+      <input class="search-input" v-model="filter" />
+    </div>
+    <table class="lists-table" v-if="lists.length > 0">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Descrição</th>
+          <th>Autor</th>
+          <th>Tags</th>
+          <th width="24">Jogos</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr :key="item.id" v-for="item in display">
+          <td>{{ item.name }}</td>
+          <td>{{ item.description }}</td>
+          <td class="center">{{ item.owner }}</td>
+          <td class="center">{{ item.tags.join(', ') || '-' }}</td>
+          <td class="center">{{ item.games.length }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-lists" v-else>Nenhuma lista encontrada no momento</div>
+  </main>
+</template>
+
+<style>
+#browse {
+  padding: 12px 12px 90px 12px;
+  height: 100vh;
+  background: linear-gradient(
+    225deg,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey
+  );
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.lists-table {
+  width: 100%;
+  border: solid 2px #dddddd;
+  background-color: #eeeeee;
+}
+
+.lists-table th {
+  font-weight: bold;
+  background-color: var(--color-button);
+  color: white;
+}
+
+.lists-table th,
+.lists-table td {
+  border: #dddddd solid 1px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.lists-table td {
+  font-size: .9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.center {
+  text-align: center;
+}
+
+.search-input-control {
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px 40px;
+  border-radius: 20px;
+  outline: 0;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 20%;
+}
+</style>

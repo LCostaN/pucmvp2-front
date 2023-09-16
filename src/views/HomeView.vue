@@ -1,21 +1,20 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
+import { ref, reactive, onMounted } from 'vue'
 
-import { productService } from '../services'
-import store from '../store'
-
-import ProductCardComponent from '../components/ProductCardComponent.vue'
+import GameCardComponent from '../components/GameCardComponent.vue'
 import ImagePreviewComponent from '../components/ImagePreviewComponent.vue'
+import { gameService } from '../services'
 
-const products = ref([])
+const filters = reactive({})
+const games = ref([])
 const selectedImage = ref(null)
+const scroll = ref(0)
 
-async function getProducts() {
+async function getGames() {
   try {
-    products.value = await productService.getProducts()
+    games.value = await gameService.get(filters)
   } catch (e) {
-    products.value = []
+    games.value = []
     console.log(e)
   }
 }
@@ -24,35 +23,39 @@ function selectImage(val) {
   selectedImage.value = val
 }
 
-onMounted(getProducts)
+function scrollToTop() {
+  document.getElementById('home').scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  })
+}
+
+function onScroll(event) {
+  scroll.value = event.target.scrollTop
+}
+
+onMounted(getGames)
 </script>
 
 <template>
-  <main id="home">
-    <div class="shop-wrapper" v-if="products.length > 0">
-      <ProductCardComponent
+  <main id="home" @scroll="onScroll">
+    <div class="games-wrapper" v-if="games.length > 0">
+      <GameCardComponent
         :key="item"
-        v-for="item in products"
-        :product="item"
+        v-for="item in games"
+        :game="item"
         @selectImage="selectImage"
       />
     </div>
-    <div class="no-shop" v-else>Nenhum produto à venda no momento</div>
+    <div class="no-games" v-else>Nenhum jogo disponível no momento</div>
     <ImagePreviewComponent
       v-show="selectedImage"
       :src="selectedImage"
       @close="selectedImage = null"
     />
-    <RouterLink custom to="/order" v-slot="{ navigate }">
-      <button
-        v-if="store.order.products.length > 0"
-        class="finish-shopping-button"
-        @click="navigate"
-        role="link"
-      >
-        <font-awesome-icon :icon="['fas', 'arrow-right']" />
-      </button>
-    </RouterLink>
+    <button class="scroll-top-button" v-show="scroll > 20" @click="scrollToTop">
+      <font-awesome-icon :icon="['fas', 'arrow-up']" />
+    </button>
   </main>
 </template>
 
@@ -77,11 +80,18 @@ onMounted(getProducts)
   overflow-y: auto;
 }
 
-.shop-wrapper {
+.games-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 260px);
-  grid-auto-rows: 250px;
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, 250px);
+  grid-auto-rows: 300px;
+  gap: 20px;
   justify-content: center;
+}
+
+.no-games {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 2px 2px 5px black;
 }
 </style>

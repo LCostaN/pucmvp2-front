@@ -11,6 +11,25 @@ b {
   font-weight: bold !important;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
+h3 {
+  border-bottom: solid 2px grey;
+}
+
+.scroll-top-button {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 16px;
+  cursor: pointer;
+  border-radius: 50%;
+  color: white;
+  background-color: var(--color-button);
+}
+
 *::-webkit-scrollbar {
   width: 8px;
 }
@@ -23,25 +42,6 @@ b {
   background-color: darkgrey;
   border-radius: 20px;
   border: 3px solid grey;
-}
-
-.finish-shopping-button {
-  position: fixed;
-  bottom: 24px;
-  right: 20px;
-  z-index: 10;
-  padding: 10px;
-  border-radius: 100%;
-  border: solid 2px white;
-  color: white;
-  background-color: blue;
-  box-shadow: 0px 0px 15px black;
-  transition: all 0.5s;
-  cursor: pointer;
-}
-
-.finish-shopping-button:hover {
-  transform: scale(1.2);
 }
 
 @media (hover: hover) {

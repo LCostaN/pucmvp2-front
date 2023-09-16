@@ -5,10 +5,17 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
   <header>
     <nav>
-      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="36" height="36" />
+      <img
+        alt="Vue logo"
+        class="logo"
+        src="@/assets/logo.svg"
+        width="36"
+        height="36"
+      />
       <div class="nav-links">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/profile">Profile</RouterLink>
+        <RouterLink to="/">Jogos</RouterLink>
+        <RouterLink to="/lists">Listas</RouterLink>
+        <RouterLink to="/profile">Perfil</RouterLink>
       </div>
     </nav>
   </header>
@@ -31,7 +38,8 @@ nav {
   display: block;
   background-color: darkgrey;
   width: 72px;
-  padding: .25em;
+  padding: 0.25em;
+  text-align: center;
 }
 .nav-links {
   display: flex;
@@ -42,7 +50,7 @@ nav {
 }
 
 nav a.router-link-exact-active {
-  color: var(--color-text);
+  color: var(--color-button);
 }
 
 nav a.router-link-exact-active:hover {
@@ -51,7 +59,7 @@ nav a.router-link-exact-active:hover {
 
 nav a {
   display: block;
-  padding: .2rem 1rem;
+  padding: 0.2rem 1rem;
   border-left: 1px solid var(--color-border);
 }
 

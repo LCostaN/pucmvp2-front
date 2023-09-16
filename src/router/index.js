@@ -11,20 +11,16 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/order',
-      name: 'order',
-      component: () => import('../views/OrderView.vue')
-    },
-    {
-      path: '/shipping',
-      name: 'shipping',
-      component: () => import('../views/ShippingView.vue')
+      path: '/lists',
+      alias: '/browse',
+      name: 'browse',
+      component: () => import('../views/BrowseView.vue')
     },
     {
       path: '/profile',
       name: 'profile',
       component: () => import('../views/ProfileView.vue')
-    },
+    }
   ]
 })
 
