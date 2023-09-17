@@ -13,8 +13,13 @@ const router = createRouter({
     {
       path: '/lists',
       alias: '/browse',
-      name: 'browse',
+      name: 'lists',
       component: () => import('../views/BrowseView.vue')
+    },
+    {
+      path: '/lists/:id',
+      name: 'listById',
+      component: () => import('../views/GameListView.vue')
     },
     {
       path: '/profile',

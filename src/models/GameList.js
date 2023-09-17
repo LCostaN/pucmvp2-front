@@ -1,12 +1,11 @@
 import { Game } from '.'
 
 export default class GameList {
-  constructor(id, name, description, ownerId, owner, games, isPrivate, tags, created, updated) {
+  constructor(id, name, description, user, games, isPrivate, tags, created, updated) {
     this.id = id
     this.name = name
     this.description = description
-    this.ownerId = ownerId
-    this.owner = owner
+    this.user = user
     this.games = (games || []).map((g) => Game.fromJson(g))
     this.isPrivate = isPrivate || false
     this.tags = tags || []
@@ -14,8 +13,8 @@ export default class GameList {
     this.updated = updated || created || new Date()
   }
 
-  static fromJson({ id, name, description, ownerId, games, isPrivate, tags, created, updated }) {
-    return new GameList(id, name, description, ownerId, games, isPrivate, tags, created, updated)
+  static fromJson({ id, name, description, user, games, isPrivate, tags, created, updated }) {
+    return new GameList(id, name, description, user, games, isPrivate, tags, created, updated)
   }
 
   setGameToList(game) {

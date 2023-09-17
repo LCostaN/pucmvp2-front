@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import store from './store';
 </script>
 
 <template>
@@ -15,7 +16,10 @@ import { RouterLink, RouterView } from 'vue-router'
       <div class="nav-links">
         <RouterLink to="/">Jogos</RouterLink>
         <RouterLink to="/lists">Listas</RouterLink>
-        <RouterLink to="/profile">Perfil</RouterLink>
+        <RouterLink to="/profile">Minhas Listas</RouterLink>
+        <a v-if="store.user" class='logout' @click="store.reset">
+          Sair <font-awesome-icon :icon="['fas', 'right-from-bracket']" />
+        </a>
       </div>
     </nav>
   </header>
@@ -51,6 +55,7 @@ nav {
 
 nav a.router-link-exact-active {
   color: var(--color-button);
+  cursor: default;
 }
 
 nav a.router-link-exact-active:hover {
@@ -65,5 +70,14 @@ nav a {
 
 nav a:first-of-type {
   border: 0;
+}
+
+nav a.logout {
+  color: red;
+}
+
+nav a.logout:hover {
+  background-color: #ff000020;
+  cursor: pointer;
 }
 </style>

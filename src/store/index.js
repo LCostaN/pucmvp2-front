@@ -1,29 +1,40 @@
 import { reactive } from 'vue'
 import { GameList, User } from '../models'
 
-function saveStoreState() {
-  localStorage.setItem('store', JSON.stringify(store))
-}
-
 class StoreState {
   constructor({ user, lists }) {
     this.user = user ? User.fromJson(user) : null
-    this.lists = (lists || []).map((gl) => GameList.fromJson(gl || {}))
+    this.lists = (lists || []).map((gl) => GameList.fromJson(gl))
+  }
+
+  saveStoreState() {
+    localStorage.setItem('store', JSON.stringify(store))
   }
 
   setUser(val) {
     this.user = val
-    saveStoreState()
+    this.saveStoreState()
+  }
+
+  setLists(val) {
+    this.lists = val
+    this.saveStoreState()
   }
 
   addList(gameList) {
     this.lists.push(gameList)
-    saveStoreState()
+    this.saveStoreState()
   }
 
   removeList(id) {
     this.lists = this.lists.filter((gl) => gl.id != id)
-    saveStoreState()
+    this.saveStoreState()
+  }
+
+  reset() {
+    this.user = null
+    this.lists = []
+    this.saveStoreState()
   }
 }
 

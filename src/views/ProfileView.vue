@@ -1,28 +1,55 @@
 <script setup>
-import { ref } from 'vue'
-
+import AuthComponent from '../components/AuthComponent.vue'
+import FloatingButton from '../components/FloatingButton.vue'
+import MyListsComponent from '../components/MyListsComponent.vue'
 import store from '../store'
-import { User } from '../models'
 
-const user = ref(store.user || new User(0))
-const pass = ref('')
-
-function save() {
-  store.setUser(user)
+function showNewListForm() {
+  console.log('New List Form')
 }
-
-function register() {}
-
-function updateLogin() {}
 </script>
 
 <template>
-  <main>
-    <input v-model="user.name" placeholder="Nome" />
-    <input v-model="user.email" placeholder="E-mail" />
-    <input type="password" v-model="pass" placeholder="Senha" />
-    <button @click="save">Salvar</button>
+  <main id="profile">
+    <AuthComponent v-if="!store.user" />
+    <div v-else>
+      <MyListsComponent />
+      <FloatingButton @click="showNewListForm">
+        <font-awesome-icon :icon="['fas', 'plus']" />
+      </FloatingButton>
+    </div>
   </main>
 </template>
 
-<style scoped></style>
+<style>
+#profile {
+  display: grid;
+  grid-template-rows: min-content min-content;
+  gap: 20px;
+  padding: 12px 12px 90px 12px;
+  height: 100vh;
+  background: linear-gradient(
+    225deg,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey
+  );
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.profile-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  grid-auto-rows: 300px;
+  gap: 20px;
+  justify-content: center;
+}
+</style>

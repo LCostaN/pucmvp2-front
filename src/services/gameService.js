@@ -19,10 +19,6 @@ class GameService {
 
     return games
   }
-
-  // async like(id) {}
-  // async neutral(id) {}
-  // async dislike(id) {}
 }
 
 const gameService = new GameService()

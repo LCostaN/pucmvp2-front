@@ -2,7 +2,7 @@ import { GameList } from '../models'
 import store from '../store'
 
 const mockLists = [
-  new GameList(1, 'Preferidos', 'Minha lista de preferidos', 1, 'Lucas', [], true, [])
+  new GameList(1, 'Preferidos', 'Minha lista de preferidos', 'lnantes', [], true, [])
 ]
 
 class GameListService {
@@ -11,11 +11,11 @@ class GameListService {
   }
 
   getMyLists() {
-    return [...mockLists.filter((gl) => gl.ownerId == store.user.id)]
+    return [...mockLists.filter((gl) => gl.user == store.user.username)]
   }
 
   createGameList(name, description, userId) {
-    const index = mockLists.length
+    const index = (mockLists[mockLists.length - 1]?.id || 0) + 1
     mockLists.push(new GameList(index, name, description, userId))
     return index
   }

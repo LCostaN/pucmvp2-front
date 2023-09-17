@@ -1,5 +1,12 @@
 @import './base.css';
 
+.card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 2px 2px 5px black;
+}
+
 a,
 .green {
   text-decoration: none;
@@ -17,17 +24,6 @@ b {
 
 h3 {
   border-bottom: solid 2px grey;
-}
-
-.scroll-top-button {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  padding: 16px;
-  cursor: pointer;
-  border-radius: 50%;
-  color: white;
-  background-color: var(--color-button);
 }
 
 *::-webkit-scrollbar {

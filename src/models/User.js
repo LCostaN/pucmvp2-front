@@ -1,11 +1,14 @@
 export default class User {
-  constructor(id, name, title) {
+  constructor(id, username) {
     this.id = id
-    this.name = name
-    this.title = title
+    this.username = username
   }
 
-  static fromJson({id, name, title}) {
-    return new User(id, name, title)
+  static fromJson({id, username}) {
+    return new User(id, username)
+  }
+
+  clone() {
+    return new User(this.id, this.username)
   }
 }
