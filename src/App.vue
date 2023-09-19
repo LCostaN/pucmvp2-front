@@ -1,23 +1,20 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import store from './store';
+import store from './store'
 </script>
 
 <template>
   <header>
     <nav>
-      <img
-        alt="Vue logo"
-        class="logo"
-        src="@/assets/logo.svg"
-        width="36"
-        height="36"
-      />
+      <div v-if="$route.name == 'details'" class="logo clickable" @click="$router.go(-1)">
+        <font-awesome-icon :icon="['fas', 'arrow-left']" style="color: var(--color-button)"/>
+      </div>
+      <img v-else alt="Vue logo" class="logo" src="@/assets/logo.svg" width="36" height="36" />
       <div class="nav-links">
         <RouterLink to="/">Jogos</RouterLink>
         <RouterLink to="/lists">Listas</RouterLink>
         <RouterLink to="/profile">Minhas Listas</RouterLink>
-        <a v-if="store.user" class='logout' @click="store.reset">
+        <a v-if="store.user" class="logout" @click="store.reset">
           Sair <font-awesome-icon :icon="['fas', 'right-from-bracket']" />
         </a>
       </div>

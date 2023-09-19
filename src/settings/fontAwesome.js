@@ -9,6 +9,8 @@ import {
   faPlus,
   faRightFromBracket,
   faCheckCircle,
+  faCheckSquare,
+  faSquare
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -20,4 +22,6 @@ library.add(
   faPlus,
   faRightFromBracket,
   faCheckCircle,
+  faCheckSquare,
+  faSquare,
 )

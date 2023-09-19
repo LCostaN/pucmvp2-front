@@ -3,10 +3,6 @@ import AuthComponent from '../components/AuthComponent.vue'
 import FloatingButton from '../components/FloatingButton.vue'
 import MyListsComponent from '../components/MyListsComponent.vue'
 import store from '../store'
-
-function showNewListForm() {
-  console.log('New List Form')
-}
 </script>
 
 <template>
@@ -14,9 +10,11 @@ function showNewListForm() {
     <AuthComponent v-if="!store.user" />
     <div v-else>
       <MyListsComponent />
-      <FloatingButton @click="showNewListForm">
-        <font-awesome-icon :icon="['fas', 'plus']" />
-      </FloatingButton>
+      <RouterLink to="/lists/new" custom v-slot="{ navigate }">
+        <FloatingButton @click="navigate">
+          <font-awesome-icon :icon="['fas', 'plus']" />
+        </FloatingButton>
+      </RouterLink>
     </div>
   </main>
 </template>

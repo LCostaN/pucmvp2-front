@@ -1,68 +1,40 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
-import ListOfGamesComponent from '../components/ListOfGamesComponent.vue'
-import FloatingButton from '../components/FloatingButton.vue'
-import { gameService } from '../services'
+import { gameListService } from '../services'
 import store from '../store'
+import NewGameListComponent from '../components/NewGameListComponent.vue';
+import GameListDetailsComponent from '../components/GameListDetailsComponent.vue';
 
 const route = useRoute()
 
-const list = ref(store.lists.find((l) => l.id == route.params.id))
-const games = ref([])
+const localList = computed(() => store.lists.find((l) => l.id == route.params?.id))
+const list = ref(localList.value)
 
-const filter = ref('')
-const display1 = computed(() => list.value.games)
-const display2 = computed(() => games.value)
-
-const scroll = ref(0)
-
-async function getGames() {
+async function loadList() {
   try {
-    games.value = await gameService.get()
+    if (!list.value) list.value = await gameListService.get(route.params.id)
   } catch (e) {
-    games.value = []
-    console.log(e)
+    console.error('LOAD LIST FAIL', e)
   }
 }
 
-function scrollToTop() {
-  document.getElementById('gamelist').scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  })
+async function initialLoading() {
+  await loadList()
 }
 
-function onScroll(event) {
-  scroll.value = event.target.scrollTop
-}
-
-function addToList(id) {
-  list.value.games.push(games.value.find((g) => g.id == id))
-}
-
-function removeFromList(id) {
-  const index = list.value.games.findIndex((g) => g.id == id)
-  list.value.games.splice(index, 1)
-}
-
-onMounted(getGames)
+onMounted(initialLoading)
 </script>
 
 <template>
-  <main id="gamelist" @scroll="onScroll">
-    <ListOfGamesComponent @remove="removeFromList" :games="display1" />
-    <ListOfGamesComponent @add="addToList" :games="display2" />
-    <FloatingButton :show="scroll > 20" @click="scrollToTop">
-      <font-awesome-icon :icon="['fas', 'arrow-up']" />
-    </FloatingButton>
-  </main>
+  <NewGameListComponent v-if="!list"/>
+  <GameListDetailsComponent :list="list" v-else/>
 </template>
 
 <style>
 #gamelist {
-  padding: 12px 12px 90px 12px;
+  padding: 20px 20px 90px 20px;
   height: 100vh;
   background: linear-gradient(
     225deg,
@@ -79,5 +51,40 @@ onMounted(getGames)
   );
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.lists-table {
+  margin-bottom: 12px;
+}
+
+td.input-cell {
+  min-width: 200px;
+  padding: 0;
+}
+
+td.no-wrap {
+  min-width: 120px;
+  max-width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+input {
+  width: 100%;
+  padding: 4px;
+}
+
+h3 {
+  padding-left: 10px;
+  margin-bottom: 12px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  background: linear-gradient(to right, #ffffffc5, transparent);
+  border-color: var(--color-button);
+  color: var(--color-button);
+}
+
+h3:last-of-type {
+  margin-top: 20px;
 }
 </style>

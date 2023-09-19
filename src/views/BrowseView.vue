@@ -40,7 +40,7 @@ onMounted(getLists)
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td class="center">{{ item.user }}</td>
-          <td class="center">{{ item.tags.join(', ') || '-' }}</td>
+          <td class="center no-wrap">{{ item.tags.join(', ') || '-' }}</td>
           <td class="center">{{ item.games.length }}</td>
         </tr>
       </tbody>
@@ -68,52 +68,5 @@ onMounted(getLists)
   );
   overflow-x: hidden;
   overflow-y: auto;
-}
-
-.lists-table {
-  width: 100%;
-  border: solid 2px #dddddd;
-  background-color: #eeeeee;
-}
-
-.lists-table th {
-  font-weight: bold;
-  background-color: var(--color-button);
-  color: white;
-}
-
-.lists-table th,
-.lists-table td {
-  border: #dddddd solid 1px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.lists-table td {
-  font-size: .9rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.center {
-  text-align: center;
-}
-
-.search-input-control {
-  position: relative;
-}
-
-.search-input {
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 8px 40px;
-  border-radius: 20px;
-  outline: 0;
-}
-
-.search-icon {
-  position: absolute;
-  left: 14px;
-  top: 20%;
 }
 </style>

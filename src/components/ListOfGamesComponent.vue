@@ -1,9 +1,11 @@
 <script setup>
 import { ref } from 'vue'
+
 import GameCardComponent from './GameCardComponent.vue'
 import ImagePreviewComponent from './ImagePreviewComponent.vue';
+import { GameList } from '../models';
 
-defineProps({ games: Array })
+defineProps({ games: Array, list: GameList })
 
 const selectedImage = ref(null)
 
@@ -18,7 +20,7 @@ function selectImage(val) {
       :key="item.id"
       v-for="item in games"
       :game="item"
-      @remove="$emit('remove', item.id)"
+      :list="list"
       @selectImage="selectImage"
     />
   </div>

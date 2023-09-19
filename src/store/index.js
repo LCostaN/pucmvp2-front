@@ -1,6 +1,7 @@
 import { reactive } from 'vue'
 import { GameList, User } from '../models'
 
+// Creating a specialized class so we can use a local storage as a "session saver"
 class StoreState {
   constructor({ user, lists }) {
     this.user = user ? User.fromJson(user) : null
@@ -26,8 +27,25 @@ class StoreState {
     this.saveStoreState()
   }
 
+  updateList(gameList) {
+    store.lists.find((l) => l.id == gameList.id)
+    store.saveStoreState()
+  }
+
   removeList(id) {
     this.lists = this.lists.filter((gl) => gl.id != id)
+    this.saveStoreState()
+  }
+
+  addGameToList(listId, game) {
+    const index = this.lists.findIndex((l) => l.id == listId)
+    this.lists[index].setGameToList(game)
+    this.saveStoreState()
+  }
+
+  removeGameFromList(listId, game) {
+    const index = this.lists.findIndex((l) => l.id == listId)
+    this.lists[index].remove(game)
     this.saveStoreState()
   }
 

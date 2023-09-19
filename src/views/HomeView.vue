@@ -35,7 +35,7 @@ onMounted(getGames)
 <template>
   <main id="home" @scroll="onScroll">
     <ListOfGamesComponent :games="games" />
-    <FloatingButton :show="scroll > 20" @click="scrollToTop">
+    <FloatingButton v-show="scroll > 20" @click="scrollToTop">
       <font-awesome-icon :icon="['fas', 'arrow-up']" />
     </FloatingButton>
   </main>

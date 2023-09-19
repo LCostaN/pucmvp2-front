@@ -22,8 +22,75 @@ b {
   cursor: pointer;
 }
 
+.zoomable {
+  cursor: zoom-in;
+}
+
 h3 {
   border-bottom: solid 2px grey;
+}
+
+.lists-table {
+  width: 100%;
+  border: solid 2px #dddddd;
+  background-color: #eeeeee;
+}
+
+.lists-table .clickable:hover {
+  background-color: #dddddd;
+}
+
+.lists-table th {
+  font-weight: bold;
+  background-color: var(--color-button);
+  color: white;
+}
+
+.lists-table th,
+.lists-table td {
+  border: #dddddd solid 1px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.lists-table td {
+  font-size: .9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td.input-cell {
+  min-width: 200px;
+  padding: 0;
+}
+
+td.no-wrap {
+  min-width: 120px;
+  max-width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.center {
+  text-align: center;
+}
+
+.search-input-control {
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px 40px;
+  border-radius: 20px;
+  outline: 0;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 20%;
 }
 
 *::-webkit-scrollbar {

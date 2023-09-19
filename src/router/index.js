@@ -18,8 +18,11 @@ const router = createRouter({
     },
     {
       path: '/lists/:id',
-      name: 'listById',
-      component: () => import('../views/GameListView.vue')
+      name: 'details',
+      component: () => import('../views/GameListView.vue'),
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/profile',
