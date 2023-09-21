@@ -17,6 +17,14 @@ const router = createRouter({
       component: () => import('../views/BrowseView.vue')
     },
     {
+      path: '/lists/new',
+      name: 'newlist',
+      component: () => import('../views/NewGameListView.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/lists/:id',
       name: 'details',
       component: () => import('../views/GameListView.vue'),

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 
+import SearchInputComponent from '../components/SearchInputComponent.vue';
 import { gameListService } from '../services'
 
 const filter = ref('')
@@ -21,10 +22,7 @@ onMounted(getLists)
 
 <template>
   <main id="browse">
-    <div class="search-input-control">
-      <font-awesome-icon class="search-icon" :icon="['fas', 'magnifying-glass']" />
-      <input class="search-input" v-model="filter" />
-    </div>
+    <SearchInputComponent :value="filter" @change="filter = $event"/>
     <table class="lists-table" v-if="lists.length > 0">
       <thead>
         <tr>
@@ -53,19 +51,7 @@ onMounted(getLists)
 #browse {
   padding: 12px 12px 90px 12px;
   height: 100vh;
-  background: linear-gradient(
-    225deg,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey
-  );
+  
   overflow-x: hidden;
   overflow-y: auto;
 }

@@ -1,90 +1,55 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
-import { gameListService } from '../services'
+import LoadingComponent from '../components/LoadingComponent.vue'
+import GameListDetailsComponent from '../components/GameListDetailsComponent.vue'
+
 import store from '../store'
-import NewGameListComponent from '../components/NewGameListComponent.vue';
-import GameListDetailsComponent from '../components/GameListDetailsComponent.vue';
+import { gameListService } from '../services'
 
 const route = useRoute()
 
-const localList = computed(() => store.lists.find((l) => l.id == route.params?.id))
-const list = ref(localList.value)
+const list = ref()
+const loading = ref(true)
 
 async function loadList() {
   try {
+    loading.value = true
+    list.value = store.lists.find((l) => l.id == route.params?.id)
     if (!list.value) list.value = await gameListService.get(route.params.id)
   } catch (e) {
     console.error('LOAD LIST FAIL', e)
+    list.value = undefined
+  } finally {
+    loading.value = false
   }
 }
 
-async function initialLoading() {
-  await loadList()
+function initialLoading() {
+  loadList()
 }
 
 onMounted(initialLoading)
 </script>
 
 <template>
-  <NewGameListComponent v-if="!list"/>
-  <GameListDetailsComponent :list="list" v-else/>
+  <main id="gamelist">
+    <!-- loading -->
+    <LoadingComponent v-if="loading" />
+
+    <!--  success -->
+    <GameListDetailsComponent :list="list" v-else-if="list" />
+
+    <!-- error -->
+    <div class="p-20" v-else>
+      <div class="card">Lista não encontrada</div>
+    </div>
+  </main>
 </template>
 
 <style>
-#gamelist {
-  padding: 20px 20px 90px 20px;
-  height: 100vh;
-  background: linear-gradient(
-    225deg,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey
-  );
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.lists-table {
-  margin-bottom: 12px;
-}
-
-td.input-cell {
-  min-width: 200px;
-  padding: 0;
-}
-
-td.no-wrap {
-  min-width: 120px;
-  max-width: 200px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-input {
-  width: 100%;
-  padding: 4px;
-}
-
-h3 {
-  padding-left: 10px;
-  margin-bottom: 12px;
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  background: linear-gradient(to right, #ffffffc5, transparent);
-  border-color: var(--color-button);
-  color: var(--color-button);
-}
-
-h3:last-of-type {
-  margin-top: 20px;
+.p-20 {
+  margin: 20px;
 }
 </style>

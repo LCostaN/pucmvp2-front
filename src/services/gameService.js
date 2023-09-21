@@ -5,7 +5,6 @@ const SERVICE_URL = `https://free-to-play-games-database.p.rapidapi.com/api/game
 let games = []
 
 class GameService {
-  // { id, platform, category, tag, sortBy }
   async get() {
     if (games.length > 0) return games
 

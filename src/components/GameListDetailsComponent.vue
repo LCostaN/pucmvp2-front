@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
+import SearchInputComponent from './SearchInputComponent.vue'
 import ListOfGamesComponent from './ListOfGamesComponent.vue'
 import FloatingButton from './FloatingButton.vue'
 
@@ -35,7 +36,7 @@ const display2 = computed(() =>
 )
 
 function scrollToTop() {
-  document.getElementById('gamelist').scrollTo({
+  document.getElementById('gamelistview').scrollTo({
     top: 0,
     behavior: 'smooth'
   })
@@ -68,7 +69,7 @@ onBeforeUnmount(saveList)
 </script>
 
 <template>
-  <main id="gamelist" @scroll="onScroll">
+  <div id="gamelistview" @scroll="onScroll">
     <table class="lists-table">
       <thead>
         <tr>
@@ -85,9 +86,8 @@ onBeforeUnmount(saveList)
           <td class="input-cell" style="width: 66%"><input v-model="list.description" /></td>
           <td class="center clickable" @click="list.isPrivate = !list.isPrivate">
             <font-awesome-icon
-              v-if="!list.isPrivate"
-              :icon="['fas', 'circle-check']"
-              style="color: green"
+              :icon="!list.isPrivate ? ['fas', 'square-check'] : ['far', 'square']"
+              :style="{ color: !list.isPrivate ? 'green' : 'var(--color-button)' }"
             />
           </td>
           <td class="no-wrap center">
@@ -104,10 +104,7 @@ onBeforeUnmount(saveList)
         </tr>
       </tbody>
     </table>
-    <div class="search-input-control">
-      <font-awesome-icon class="search-icon" :icon="['fas', 'magnifying-glass']" />
-      <input class="search-input" v-model="filter" />
-    </div>
+    <SearchInputComponent :value="filter" @change="filter = $event" />
     <h3>Meus jogos</h3>
     <ListOfGamesComponent :games="display1" :list="list" />
     <h3>Jogos não adicionados</h3>
@@ -115,5 +112,37 @@ onBeforeUnmount(saveList)
     <FloatingButton v-show="scroll > 20" @click="scrollToTop">
       <font-awesome-icon :icon="['fas', 'arrow-up']" />
     </FloatingButton>
-  </main>
+  </div>
 </template>
+
+<style scoped>
+#gamelistview {
+  height: 100%;
+  padding: 20px 20px 90px 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.lists-table {
+  margin-bottom: 12px;
+}
+
+input {
+  width: 100%;
+  padding: 4px;
+}
+
+h3 {
+  padding-left: 10px;
+  margin-bottom: 12px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  background: linear-gradient(to right, #ffffffc5, transparent);
+  border-color: var(--color-button);
+  color: var(--color-button);
+}
+
+h3:last-of-type {
+  margin-top: 20px;
+}
+</style>

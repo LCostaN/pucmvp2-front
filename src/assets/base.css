@@ -61,22 +61,49 @@
   scroll-behavior: smooth;
 }
 
-html, body, #app {
+html,
+body,
+#app {
   height: 100vh;
   overflow: hidden;
 }
 
 body {
   color: var(--color-text);
-  background: var(--color-background);
-  transition: color 0.5s, background-color 0.5s;
+  transition:
+    color 0.5s,
+    background-color 0.5s;
   line-height: 1.6;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
   font-size: 16px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(
+    225deg,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey,
+    grey,
+    darkgrey
+  );
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -87,7 +114,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   appearance: textfield;
   -moz-appearance: textfield;
 }

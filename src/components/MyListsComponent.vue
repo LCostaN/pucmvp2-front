@@ -1,7 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+
 import store from '../store'
+import SearchInputComponent from './SearchInputComponent.vue';
 
 const router = useRouter()
 
@@ -15,10 +17,7 @@ function goToDetails(id) {
 
 <template>
   <div v-if="store.lists.length > 0">
-    <div class="search-input-control">
-      <font-awesome-icon class="search-icon" :icon="['fas', 'magnifying-glass']" />
-      <input class="search-input" v-model="filter" />
-    </div>
+    <SearchInputComponent :value="filter" @change="filter = $event"/>
     <table class="lists-table">
       <thead>
         <tr>

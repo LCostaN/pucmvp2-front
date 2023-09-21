@@ -11,7 +11,7 @@ class GameListService {
   }
 
   getAll() {
-    return [...mockLists.filter((gl) => !gl.isPrivate || gl.user == store.user?.username)]
+    return [...mockLists.filter((gl) => !gl.isPrivate)]
   }
 
   getMyLists() {

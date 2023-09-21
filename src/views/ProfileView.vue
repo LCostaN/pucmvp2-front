@@ -3,6 +3,7 @@ import AuthComponent from '../components/AuthComponent.vue'
 import FloatingButton from '../components/FloatingButton.vue'
 import MyListsComponent from '../components/MyListsComponent.vue'
 import store from '../store'
+
 </script>
 
 <template>
@@ -26,19 +27,7 @@ import store from '../store'
   gap: 20px;
   padding: 12px 12px 90px 12px;
   height: 100vh;
-  background: linear-gradient(
-    225deg,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey
-  );
+  
   overflow-x: hidden;
   overflow-y: auto;
 }

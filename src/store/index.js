@@ -28,7 +28,8 @@ class StoreState {
   }
 
   updateList(gameList) {
-    store.lists.find((l) => l.id == gameList.id)
+    const index = store.lists.findIndex((l) => l.id == gameList.id)
+    store.lists[index] = gameList
     store.saveStoreState()
   }
 

@@ -1,5 +1,6 @@
 import { library } from '@fortawesome/fontawesome-svg-core'
 
+import { faSquare } from '@fortawesome/free-regular-svg-icons'
 import {
   faArrowUpRightFromSquare,
   faArrowRight,
@@ -10,7 +11,7 @@ import {
   faRightFromBracket,
   faCheckCircle,
   faCheckSquare,
-  faSquare
+  faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -24,4 +25,5 @@ library.add(
   faCheckCircle,
   faCheckSquare,
   faSquare,
+  faSpinner,
 )

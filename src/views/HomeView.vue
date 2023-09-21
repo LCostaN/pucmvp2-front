@@ -1,17 +1,29 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
+import SearchInputComponent from '../components/SearchInputComponent.vue'
 import ListOfGamesComponent from '../components/ListOfGamesComponent.vue'
 import FloatingButton from '../components/FloatingButton.vue'
 import { gameService } from '../services'
 
-const filters = reactive({})
 const games = ref([])
+const filter = ref('')
+
+const display = computed(() =>
+  games.value.filter(
+    (g) =>
+      g.title.toLowerCase().includes(filter.value.toLowerCase()) ||
+      g.genre.toLowerCase().includes(filter.value.toLowerCase()) ||
+      g.short_description.toLowerCase().includes(filter.value.toLowerCase()) ||
+      g.publisher.toLowerCase().includes(filter.value.toLowerCase())
+  )
+)
+
 const scroll = ref(0)
 
 async function getGames() {
   try {
-    games.value = await gameService.get(filters)
+    games.value = await gameService.get()
   } catch (e) {
     games.value = []
     console.log(e)
@@ -34,7 +46,8 @@ onMounted(getGames)
 
 <template>
   <main id="home" @scroll="onScroll">
-    <ListOfGamesComponent :games="games" />
+    <SearchInputComponent :value="filter" @change="filter = $event" />
+    <ListOfGamesComponent :games="display" />
     <FloatingButton v-show="scroll > 20" @click="scrollToTop">
       <font-awesome-icon :icon="['fas', 'arrow-up']" />
     </FloatingButton>
@@ -45,19 +58,7 @@ onMounted(getGames)
 #home {
   padding: 12px 12px 90px 12px;
   height: 100vh;
-  background: linear-gradient(
-    225deg,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey
-  );
+  
   overflow-x: hidden;
   overflow-y: auto;
 }

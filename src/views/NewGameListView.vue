@@ -14,8 +14,8 @@ const isPrivate = ref(true)
 
 async function createList() {
   const id = await gameListService.createGameList(
-    name.value,
-    description.value,
+    name.value.trim(),
+    description.value.trim(),
     store.user.id,
     isPrivate.value
   )
@@ -32,7 +32,7 @@ async function createList() {
   router.replace(`/lists/${id}`)
 }
 
-if (!store.user) useRouter().go('/profile')
+if (!store.user) router.go('/profile')
 </script>
 
 <template>
@@ -51,7 +51,7 @@ if (!store.user) useRouter().go('/profile')
           <td class="input-cell" style="width: 66%"><input v-model="description" /></td>
           <td class="center clickable" @click="isPrivate = !isPrivate">
             <font-awesome-icon
-              :icon="['fas', isPrivate ? 'square-check' : 'square']"
+              :icon="isPrivate ? ['fas', 'square-check'] : ['far', 'square']"
               :style="{ color: isPrivate ? 'green' : 'var(--color-button)' }"
               size="xl"
             />
@@ -71,25 +71,21 @@ if (!store.user) useRouter().go('/profile')
   </main>
 </template>
 
-<style>
+<style scoped>
 #newlist {
   padding: 12px 12px 90px 12px;
   height: 100vh;
-  background: linear-gradient(
-    225deg,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey,
-    grey,
-    darkgrey
-  );
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.lists-table {
+  margin-bottom: 12px;
+}
+
+input {
+  width: 100%;
+  padding: 4px;
 }
 
 .add-list-button-wrapper {

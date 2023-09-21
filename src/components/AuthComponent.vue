@@ -71,13 +71,15 @@ async function login() {
 
 .auth-toggle {
   width: 135px;
+  color: var(--color-button);
+  text-decoration: underline;
   text-align: center;
   cursor: pointer;
 }
 
 .auth-toggle:hover {
-  color: var(--color-button);
-  background-color: #44444420;
+  color: blue;
+  background-color: #44444410;
 }
 
 input {
