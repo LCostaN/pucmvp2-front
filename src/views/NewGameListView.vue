@@ -10,7 +10,7 @@ const router = useRouter()
 
 const name = ref('')
 const description = ref('')
-const isPrivate = ref(true)
+const isPrivate = ref(false)
 
 async function createList() {
   const id = await gameListService.createGameList(
@@ -51,8 +51,8 @@ if (!store.user) router.go('/profile')
           <td class="input-cell" style="width: 66%"><input v-model="description" /></td>
           <td class="center clickable" @click="isPrivate = !isPrivate">
             <font-awesome-icon
-              :icon="isPrivate ? ['fas', 'square-check'] : ['far', 'square']"
-              :style="{ color: isPrivate ? 'green' : 'var(--color-button)' }"
+              :icon="!isPrivate ? ['fas', 'square-check'] : ['far', 'square']"
+              :style="{ color: !isPrivate ? 'green' : 'var(--color-button)' }"
               size="xl"
             />
           </td>

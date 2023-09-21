@@ -1,8 +1,11 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router';
 
 import SearchInputComponent from '../components/SearchInputComponent.vue';
 import { gameListService } from '../services'
+
+const router = useRouter()
 
 const filter = ref('')
 const lists = ref([])
@@ -15,6 +18,10 @@ async function getLists() {
     lists.value = []
     console.log(e)
   }
+}
+
+function goToDetails(id) {
+  router.push(`/lists/${id}`)
 }
 
 onMounted(getLists)
@@ -34,7 +41,7 @@ onMounted(getLists)
         </tr>
       </thead>
       <tbody>
-        <tr :key="item.id" v-for="item in display">
+        <tr class="clickable" :key="item.id" v-for="item in display" @click="goToDetails(item.id)">
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td class="center">{{ item.user }}</td>
@@ -51,7 +58,6 @@ onMounted(getLists)
 #browse {
   padding: 12px 12px 90px 12px;
   height: 100vh;
-  
   overflow-x: hidden;
   overflow-y: auto;
 }

@@ -10,7 +10,7 @@ import { GameList } from '../models'
 import { gameListService, gameService } from '../services'
 
 const props = defineProps({ list: GameList })
-const list = ref(props.list.clone())
+const list = ref(props.list)
 const scroll = ref(0)
 const games = ref([])
 
@@ -117,7 +117,7 @@ onBeforeUnmount(saveList)
 
 <style scoped>
 #gamelistview {
-  height: 100%;
+  height: 100vh;
   padding: 20px 20px 90px 20px;
   overflow-x: hidden;
   overflow-y: auto;

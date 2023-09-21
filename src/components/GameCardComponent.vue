@@ -5,7 +5,7 @@ import store from '../store'
 import { Game, GameList } from '../models'
 
 const props = defineProps({ game: Game, list: GameList })
-const lists = ref(props.list ? [props.list] : [...store.lists])
+const lists = ref(store.lists)
 
 const listAddDisplay = computed(() =>
   lists.value.filter((l) => l.games.findIndex((g) => g.id == props.game.id) == -1)
@@ -50,12 +50,12 @@ function openWebsite() {
       <b>{{ game.genre }}</b> <br />
       <b>{{ game.publisher }}</b>
     </div>
-    <div class="game-card-footer" v-if="list">
+    <div class="game-card-footer" v-if="list && list.user == store.user.username">
       <button
         class="remove-from-list-button"
         @click="removeFromList"
         :value="list.id"
-        v-if="listRemoveDisplay.length > 0"
+        v-if="list.games.findIndex((g) => g.id == props.game.id) > -1"
       >
         Remove -
       </button>
@@ -65,7 +65,7 @@ function openWebsite() {
         class="add-to-list-button"
         @click="addToList"
         :value="list.id"
-        v-if="listAddDisplay.length > 0"
+        v-if="list.games.findIndex((g) => g.id == props.game.id) == -1"
       >
         Add +
       </button>
@@ -154,6 +154,11 @@ b {
   text-align: center;
   appearance: none;
   -webkit-appearance: none;
+}
+
+.remove-from-list-button option,
+.add-to-list-button option {
+  background-color: var(--color-border-hover);
 }
 
 .remove-from-list-button::-ms-expand,

@@ -6,4 +6,3 @@ services:
     container_name: mvp2_front
     ports:
       - '8080:8080'
-    working_dir: /app

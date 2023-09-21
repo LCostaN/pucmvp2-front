@@ -29,7 +29,7 @@ function goToDetails(id) {
         </tr>
       </thead>
       <tbody>
-        <tr class='clickable' :key="item.id" v-for="item in display" @click="() => goToDetails(item.id)">
+        <tr class='clickable' :key="item.id" v-for="item in display" @click="goToDetails(item.id)">
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td class="center">

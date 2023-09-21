@@ -1,6 +1,11 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import store from '../store'
+
+function logout() {
+  store.reset()
+
+}
 </script>
 
 <template>
@@ -14,9 +19,9 @@ import store from '../store'
         <RouterLink to="/">Jogos</RouterLink>
         <RouterLink to="/lists">Listas</RouterLink>
         <RouterLink to="/profile">Minhas Listas</RouterLink>
-        <a v-if="store.user" class="logout" @click="store.reset">
+        <RouterLink to="/profile" v-if="store.user" class="logout" @click="logout">
           Sair <font-awesome-icon :icon="['fas', 'right-from-bracket']" />
-        </a>
+        </RouterLink>
       </div>
     </nav>
   </header>
