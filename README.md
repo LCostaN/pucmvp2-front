@@ -119,7 +119,7 @@ Por fim, `mvp2front` no final do comando é o nome da imagem que usaremos pra mo
 
 ```sh
 docker build -t mvp2front .
-docker run -d -p 8080:8080 --rm --name mvp2-front mvp2front
+docker run -d -p 8080:80 --rm --name mvp2-front mvp2front
 ```
 
 Após os comandos docker, a aplicação deverá estar acessível [na máquina local, porta 8080](http://localhost:8080)

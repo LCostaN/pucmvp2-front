@@ -1,12 +1,11 @@
 import store from '../store'
 import { CreateGameListRequest, UpdateGameListRequest } from '../interface/gamelist'
 
-const LIST_API = 'http://localhost:5002/list/'
+const LIST_API = import.meta.env.VITE_LIST_API_URL || 'http://localhost:5001/list/'
 
 class GameListService {
   async _response(response) {
     const parsed = await response.json()
-    console.log(parsed)
     if(response.status != 200) throw new Error(parsed.message)
 
     return parsed

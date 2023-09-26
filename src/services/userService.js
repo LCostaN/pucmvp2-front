@@ -1,6 +1,6 @@
 import { AuthRequest } from '../interface'
 
-const USER_URL = 'http://localhost:5000/'
+const USER_URL = import.meta.env.VITE_USER_API_URL || 'http://localhost:5000/'
 
 class UserService {
   async login(username, pass) {
