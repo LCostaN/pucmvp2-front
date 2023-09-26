@@ -1,41 +1,32 @@
-import { auth } from '../interface'
-import { User } from '../models'
+import { AuthRequest } from '../interface'
 
-const mockAuth = []
-const mockUsers = []
+const USER_URL = 'http://localhost:5000/'
 
 class UserService {
-  login(username, pass) {
-    username = (username || '').toLowerCase()
-    const testUser = mockAuth.findIndex((a) => a.username == username)
+  async login(username, pass) {
+    const data = new AuthRequest(username, pass)
+    const response = await fetch(USER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
 
-    if (testUser == -1) return -1
-    if (mockAuth[testUser].pass != pass) return -2
+    const body = await response.json()
 
-    return mockUsers.find((u) => u.username == username)
+    return body
   }
 
-  register(username, pass) {
-    username = (username || '').toLowerCase()
-    if ((pass || '').length < 4) return -1
-    if (username.length < 3) return -2
-    if (mockUsers.findIndex((u) => u.username.toLowerCase() == username) > -1) return -3
+  async register(username, pass) {
+    const data = new AuthRequest(username, pass)
+    const result = await fetch(USER_URL + 'new', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
 
-    mockAuth.push(new auth.RegisterRequest(username, pass))
+    const body = await result.json()
 
-    const index = (mockUsers[mockUsers.length - 1]?.id || 0) + 1
-    mockUsers.push(new User(index, username))
-    return index
-  }
-
-  updateUser(user) {
-    const index = mockUsers.findIndex((e) => e.id == user.id)
-    mockUsers[index] = user
-  }
-
-  deleteUser(id) {
-    const index = mockUsers.findIndex((e) => e.id == id)
-    mockUsers.splice(index, 1)
+    return body
   }
 }
 

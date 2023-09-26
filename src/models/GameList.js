@@ -12,7 +12,8 @@ export default class GameList {
     this.updated = updated || created || new Date()
   }
 
-  static fromJson({ id, name, description, user, games, isPrivate, created, updated }) {
+  static fromJson({ id, name, description, user, games, isPrivate, created, updated, is_private }) {
+    isPrivate = is_private || isPrivate
     return new GameList(id, name, description, user, games, isPrivate, created, updated)
   }
 

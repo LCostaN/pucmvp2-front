@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 
 import SearchInputComponent from '../components/SearchInputComponent.vue';
 import { gameListService } from '../services'
+import { GameList } from '../models';
 
 const router = useRouter()
 
@@ -13,7 +14,8 @@ const display = computed(() => lists.value.filter((gl) => gl.name.includes(filte
 
 async function getLists() {
   try {
-    lists.value = await gameListService.getAll()
+    const response = await gameListService.getAll()
+    lists.value = response.data.map((gl) => GameList.fromJson(gl))
   } catch (e) {
     lists.value = []
     console.log(e)

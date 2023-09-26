@@ -7,6 +7,7 @@ import GameListDetailsComponent from '../components/GameListDetailsComponent.vue
 
 import store from '../store'
 import { gameListService } from '../services'
+import { GameList } from '../models'
 
 const route = useRoute()
 
@@ -17,7 +18,10 @@ async function loadList() {
   try {
     loading.value = true
     list.value = store.lists.find((l) => l.id == route.params?.id)
-    if (!list.value) list.value = await gameListService.get(route.params.id)
+    if (!list.value) {
+      const response = await gameListService.get(route.params.id)
+      list.value = GameList.fromJson(response)
+    }
   } catch (e) {
     console.error('LOAD LIST FAIL', e)
     list.value = undefined

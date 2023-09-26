@@ -1,37 +1,96 @@
-import { GameList } from '../models'
 import store from '../store'
+import { CreateGameListRequest, UpdateGameListRequest } from '../interface/gamelist'
 
-const mockLists = [
-  new GameList(1, 'Preferidos', 'Minha lista de preferidos', 'lnantes', [], true)
-]
+const LIST_API = 'http://localhost:5002/list/'
 
 class GameListService {
-  get(id) {
-    return mockLists.find((gl) => gl.id == id)?.clone()
+  async _response(response) {
+    const parsed = await response.json()
+    console.log(parsed)
+    if(response.status != 200) throw new Error(parsed.message)
+
+    return parsed
+  }
+  _getHeader() {
+    const header = {
+      'Content-Type': 'application/json'
+    }
+
+    if (store.user?.token) {
+      header['Authorization'] = `Bearer ${store.user.token}`
+    }
+
+    return header
   }
 
-  getAll() {
-    return [...mockLists.filter((gl) => !gl.isPrivate)]
+  async get(id) {
+    const response = await fetch(LIST_API + id, {
+      headers: this._getHeader()
+    })
+
+    return this._response(response)
   }
 
-  getMyLists() {
-    return [...mockLists.filter((gl) => gl.user == store.user.username)]
+  async getAll() {
+    const response = await fetch(LIST_API, {
+      headers: this._getHeader()
+    })
+
+    return this._response(response)
   }
 
-  createGameList(name, description, userId, isPrivate) {
-    const index = (mockLists[mockLists.length - 1]?.id || 0) + 1
-    mockLists.push(new GameList(index, name, description, userId, [], isPrivate))
-    return index
+  async getMyLists() {
+    if (!store.user) return []
+
+    const response = await fetch(LIST_API + 'me', {
+      headers: this._getHeader()
+    })
+
+    return this._response(response)
   }
 
-  updateGameList(gameList) {
-    const index = mockLists.findIndex((e) => e.id == gameList.id)
-    mockLists[index] = gameList
+  async createGameList(name, description, isPrivate) {
+    if (!store.user) return undefined
+
+    const data = new CreateGameListRequest(name, description, isPrivate)
+
+    const response = await fetch(LIST_API, {
+      method: 'POST',
+      headers: this._getHeader(),
+      body: JSON.stringify(data)
+    })
+
+    return this._response(response)
   }
 
-  deleteGameList(id) {
-    const index = mockLists.findIndex((e) => e.id == id)
-    mockLists.splice(index, 1)
+  async updateGameList(gameList) {
+    if (!store.user) return undefined
+
+    const data = new UpdateGameListRequest(
+      gameList.name,
+      gameList.description,
+      gameList.isPrivate,
+      gameList.games
+    )
+
+    const response = await fetch(LIST_API + gameList.id, {
+      method: 'PUT',
+      headers: this._getHeader(),
+      body: JSON.stringify(data)
+    })
+
+    return this._response(response)
+  }
+
+  async deleteGameList(id) {
+    if (!store.user) return undefined
+
+    const response = await fetch(LIST_API + id, {
+      method: 'DELETE',
+      headers: this._getHeader(),
+    })
+
+    return this._response(response)
   }
 }
 

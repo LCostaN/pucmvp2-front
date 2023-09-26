@@ -13,23 +13,20 @@ const description = ref('')
 const isPrivate = ref(false)
 
 async function createList() {
-  const id = await gameListService.createGameList(
-    name.value.trim(),
-    description.value.trim(),
-    store.user.id,
-    isPrivate.value
-  )
+  try {
+    const response = await gameListService.createGameList(
+      name.value.trim(),
+      description.value.trim(),
+      isPrivate.value
+    )
 
-  const newList = new GameList(
-    id,
-    name.value,
-    description.value,
-    store.user.username,
-    [],
-    isPrivate.value
-  )
-  store.addList(newList)
-  router.replace(`/lists/${id}`)
+    const newList = GameList.fromJson(response)
+    store.addList(newList)
+    router.replace(`/lists/${newList.id}`)
+  } catch (e) {
+    console.log(e)
+    alert(e.message)
+  }
 }
 
 if (!store.user) router.go('/profile')

@@ -2,36 +2,45 @@
 import { ref } from 'vue'
 
 import store from '../store'
-import { User } from '../models'
+import { GameList, User } from '../models'
 import { userService, gameListService } from '../services'
 
 const username = ref(store.user?.username)
 const pass = ref(null)
 const isRegister = ref(!store.user)
 
-function register() {
-  const result = userService.register(username.value, pass.value)
+const error = ref()
 
-  if (result < 0) {
-    console.log(`Error code: ${result}`)
-    return
+async function register() {
+  const result = await userService.register(username.value, pass.value)
+
+  if (result.message) {
+    error.value = result.message
+  } else {
+    store.setUser(new User(result.token, username.value))
   }
-
-  store.setUser(new User(result, username.value))
 }
 
 async function login() {
   const result = await userService.login(username.value, pass.value)
 
-  if (typeof result == 'number') {
-    console.log(`Error code: ${result}`)
-    return
+  if (result.message) {
+    return error.value = result.message
+  } else {
+    store.setUser(new User(result.token, username.value))
   }
 
-  store.setUser(result)
-
   const myLists = await gameListService.getMyLists()
-  store.setLists(myLists)
+  store.setLists(myLists.data.map((l) => GameList.fromJson(l)))
+}
+
+function clearError() {
+  error.value = undefined
+}
+
+function toggle() {
+  clearError()
+  isRegister.value = !isRegister.value
 }
 </script>
 
@@ -46,10 +55,11 @@ async function login() {
           {{ isRegister ? 'Cadastrar' : 'Entrar' }}
         </button>
       </div>
-      <a class="auth-toggle" @click="isRegister = !isRegister">
+      <a class="auth-toggle" @click="toggle">
         {{ isRegister ? 'Já possuo conta' : 'Não possuo conta' }}
       </a>
     </div>
+    <div class="error center">{{ error }}</div>
   </div>
 </template>
 

@@ -60,8 +60,9 @@ async function initialLoading() {
 }
 
 function saveList() {
-  gameListService.updateGameList(list.value)
-  store.updateList(list.value)
+  if (list.value.user == store.user.username) {
+    gameListService.updateGameList(list.value).then(() => store.updateList(list.value))
+  }
 }
 
 onMounted(initialLoading)

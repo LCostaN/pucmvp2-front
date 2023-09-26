@@ -156,9 +156,12 @@ b {
   -webkit-appearance: none;
 }
 
-.remove-from-list-button option,
-.add-to-list-button option {
-  background-color: var(--color-border-hover);
+option {
+  background: var(--color-border-hover) !important;
+}
+
+option:hover {
+  background-color: white;
 }
 
 .remove-from-list-button::-ms-expand,

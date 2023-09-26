@@ -1,5 +1,13 @@
 @import './base.css';
 
+.error {
+  color: red;
+}
+
+.error.card {
+  background-color: #ff0000c0;
+}
+
 .card {
   background-color: white;
   border-radius: 12px;
