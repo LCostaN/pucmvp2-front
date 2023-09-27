@@ -12,6 +12,7 @@ import {
   faCheckCircle,
   faCheckSquare,
   faSpinner,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -26,4 +27,5 @@ library.add(
   faCheckSquare,
   faSquare,
   faSpinner,
+  faTrash
 )

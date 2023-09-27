@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
 
 import SearchInputComponent from './SearchInputComponent.vue'
 import ListOfGamesComponent from './ListOfGamesComponent.vue'
@@ -8,6 +9,8 @@ import FloatingButton from './FloatingButton.vue'
 import store from '../store'
 import { GameList } from '../models'
 import { gameListService, gameService } from '../services'
+
+const router = useRouter()
 
 const props = defineProps({ list: GameList })
 const list = ref(props.list)
@@ -60,8 +63,17 @@ async function initialLoading() {
 }
 
 function saveList() {
-  if (list.value.user == store.user.username) {
+  if (list.value?.user == store.user.username) {
     gameListService.updateGameList(list.value).then(() => store.updateList(list.value))
+  }
+}
+
+function deleteList() {
+  if (confirm('Deseja apagar permanentemente a lista ' + list.value.name + '?')) {
+    gameListService.deleteGameList(list.value.id)
+    store.removeList(list.value.id)
+    list.value == null
+    router.go(-1)
   }
 }
 
@@ -79,6 +91,9 @@ onBeforeUnmount(saveList)
           <th>{{ store.user?.username == list.user ? 'Pública' : 'Autor' }}</th>
           <th>Tags</th>
           <th width="24">Jogos</th>
+          <th v-if="store.user?.username == list.user" width="1" style="background-color: red">
+            Excluir?
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -95,6 +110,9 @@ onBeforeUnmount(saveList)
             {{ list.tags.slice(0, 3).join(', ') }}
           </td>
           <td class="center">{{ list.games.length }}</td>
+          <td class="center clickable" @click="deleteList">
+            <font-awesome-icon :icon="['fas', 'trash']" style="color: red" />
+          </td>
         </tr>
         <tr v-else>
           <td>{{ list.name }}</td>
